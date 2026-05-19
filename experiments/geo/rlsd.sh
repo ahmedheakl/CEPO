@@ -1,11 +1,11 @@
 #!/bin/bash
 
 set -x
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-export NGPUS=4
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+export NGPUS=8
 
 MODEL_PATH=Qwen/Qwen3-VL-2B-Instruct
-EXPERIMENT_NAME=qwen3_vl_2b_geo_rlsd_lora16_2k
+EXPERIMENT_NAME=qwen3_vl_2b_geo_rlsd
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOGS_NAME="${EXPERIMENT_NAME}_${TIMESTAMP}"
 
@@ -21,9 +21,12 @@ python3 -m verl.trainer.main \
     algorithm.adv_estimator=rlsd \
     algorithm.disable_kl=True \
     algorithm.use_kl_loss=False \
+    algorithm.online_filtering=False \
     algorithm.rlsd_lambda_init=0.5 \
     algorithm.rlsd_lambda_decay_steps=25 \
     algorithm.rlsd_epsilon_w=0.2 \
+    worker.actor.clip_ratio_low=0.2 \
+    worker.actor.clip_ratio_high=0.28 \
     worker.actor.model.model_path=${MODEL_PATH} \
     worker.actor.model.lora.rank=16 \
     worker.actor.optim.lr=1e-6 \
@@ -41,7 +44,7 @@ python3 -m verl.trainer.main \
     worker.ref.use_torch_compile=False \
     worker.ref.fsdp.enable_cpu_offload=False \
     worker.rollout.enforce_eager=False \
-    worker.rollout.max_model_len=2048 \
+    worker.rollout.max_model_len=2816 \
     worker.rollout.tensor_parallel_size=1 \
     trainer.experiment_name=${EXPERIMENT_NAME} \
     trainer.n_gpus_per_node=${NGPUS} \
@@ -50,4 +53,5 @@ python3 -m verl.trainer.main \
     trainer.logger='["console","wandb"]' \
     trainer.project_name="cepo" \
     trainer.val_freq=5 \
+    trainer.save_limit=2 \
     trainer.val_before_train=True 2>&1 | tee "logs/${LOGS_NAME}"

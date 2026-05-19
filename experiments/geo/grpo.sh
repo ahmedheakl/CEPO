@@ -5,9 +5,10 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 export NGPUS=8
 
 MODEL_PATH=Qwen/Qwen3-VL-2B-Instruct
-EXPERIMENT_NAME=qwen3_vl_2b_geo_grpo_lora16_200steps
+EXPERIMENT_NAME=qwen3_vl_2b_geo_grpo
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOGS_NAME="${EXPERIMENT_NAME}_${TIMESTAMP}"
+
 python3 -m verl.trainer.main \
     config=examples/config.yaml \
     data.train_files=hiyouga/geometry3k@train \
@@ -40,12 +41,12 @@ python3 -m verl.trainer.main \
     worker.ref.use_torch_compile=False \
     worker.ref.fsdp.enable_cpu_offload=False \
     worker.rollout.enforce_eager=False \
-    worker.rollout.max_model_len=2048 \
+    worker.rollout.max_model_len=2816 \
     worker.rollout.tensor_parallel_size=1 \
     trainer.experiment_name=${EXPERIMENT_NAME} \
     trainer.n_gpus_per_node=${NGPUS} \
     trainer.total_epochs=1 \
-    trainer.max_steps=200 \
+    trainer.max_steps=50 \
     trainer.logger='["console","wandb"]' \
     trainer.project_name="cepo" \
     trainer.val_freq=5 \

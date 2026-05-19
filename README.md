@@ -1,24 +1,61 @@
 # CEPO: RLVR Self-Distillation using Contrastive Evidence Policy Optimization
 
-<!-- [![arXiv](https://img.shields.io/badge/arxiv-CEPO-blue)](https://arxiv.org/abs/XXXX.XXXXX) -->
-[![GitHub Repo stars](https://img.shields.io/github/stars/ahmedheakl/CEPO)](https://github.com/ahmedheakl/CEPO/stargazers)
-[![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
+<div align="left" style="margin:24px 0;">
+  <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif"
+       width="100%" height="4"/>
+</div>
 
-> **Ahmed Heakl, Abdelrahman M. Shaker, Youssef Mohamed, Rania Elbadry, Omar Fetouh, Fahad Shahbaz Khan, Salman Khan**
->
-> MBZUAI, Linköping University, Australian National University
+<p align="center">
+  <a href="https://github.com/ahmedheakl/CEPO/stargazers"><img src="https://img.shields.io/github/stars/ahmedheakl/CEPO" alt="GitHub Repo stars"></a>
+  <!-- <a href="https://arxiv.org/abs/2505.16968"><img src="https://img.shields.io/badge/arXiv-Paper-brightgreen?style=flat-square" alt="arXiv"></a> -->
+  <a href=""><img src="https://img.shields.io/badge/License-Apache_2.0-green.svg" alt="License"></a>
+</p>
 
-![CEPO Pipeline](assets/cepo-main.png)
+
+<p align="center">
+  <a href="https://ahmedheakl.github.io/"><b>Ahmed Heakl</b></a>, 
+  <a href="https://amshaker.github.io/"><b>Abdelrahman M. Shaker</b></a>,
+  <a href="https://scholar.google.com/citations?user=MCV_U08AAAAJ&hl=en"><b>Youssef Mohamed</b></a>, 
+  <a href="https://scholar.google.com/citations?user=ic1jai8AAAAJ&hl=en"><b>Rania Elbadry</b></a><br>
+  <a href="https://ae.linkedin.com/in/omar-fetouh1"><b>Omar Fetouh</b></a>,
+  <a href="https://sites.google.com/view/fahadkhans"><b>Fahad Shahbaz Khan</b></a>,
+  <a href="https://salman-h-khan.github.io/"><b>Salman Khan</b></a>
+</p>
+
+<p align="center"><b>MBZUAI</b> · <b>Australia National University</b> . <b>Linköping University</b></p>
+
+
+---
+
+## 🆕 Latest Updates
+- 📢 **May 2025**: Training code is released.
+
+## Table of Contents
+- [💡 TL;DR](#tldr)
+- [📊 Key Results](#key-results)
+- [🧠 How It Works](#how-it-works)
+- [📦 Installation](#installation)
+- [🚀 Quick Start](#quick-start)
+- [⚙️ Training Configuration](#training-configuration)
+- [📈 Evaluation](#evaluation)
+- [📚 Citation](#citation)
+
+<p align="center">
+<img src="assets/cepo-main.png" alt="Accuracy over training steps" width=600/>
+</p>
+
 
 ## TL;DR
 
-In RLVR training (e.g., GRPO), every token in a correct trajectory gets the same reward — whether it's a decisive reasoning step or grammatical filler. **CEPO** fixes this by asking a contrastive question at each token: *does the correct answer favor this token **while** the wrong answer disfavors it?* This is done by replacing the single-reference evidence ratio $P_T^+ / P_S$ (used in RLSD) with a contrastive ratio $P_T^+ / P_T^-$, where the wrong-answer teacher $P_T^-$ is constructed from rejected rollouts already in the batch — **zero additional sampling cost**.
+In RLVR training (e.g., GRPO), every token in a correct trajectory gets the same reward, whether it's a decisive reasoning step or grammatical filler. **CEPO** fixes this by asking a contrastive question at each token: *does the correct answer favor this token **while** the wrong answer disfavors it?* This is done by replacing the single-reference evidence ratio $P_T^+ / P_S$ (used in RLSD) with a contrastive ratio $P_T^+ / P_T^-$, where the wrong-answer teacher $P_T^-$ is constructed from rejected rollouts already in the batch — **zero additional sampling cost**.
 
 ## Key Results
 
 CEPO achieves **43.43%** and **60.56%** average accuracy across five multimodal math reasoning benchmarks at 2B and 4B scale, versus **41.17%** and **57.43%** for GRPO under identical training budgets.
 
-![Accuracy over training steps](assets/cepo-teaser.png)
+<p align="center">
+<img src="assets/cepo-teaser.png" alt="Accuracy over training steps" width=500/>
+</p>
 
 | Method | DynaMath | LogicVista | MathVis. | MMMU | WeMath | **Average** |
 |---|---|---|---|---|---|---|
@@ -54,11 +91,6 @@ plugged into a standard PPO-clipped surrogate. When $G^- = \emptyset$, CEPO redu
 
 ![Token-level credit assignment](assets/cepo-tokenmap.png)
 
-### Theoretical Guarantees
-
-1. **Direction anchoring** — $\text{sign}(\hat{A}_t) = \text{sign}(A)$ for all tokens; privileged info cannot flip any token's update direction.
-2. **Leakage-free gradient** — No vocabulary-wide $r$-conditioned sum in $\nabla_\theta \mathcal{L}$; $r^+$ and $r^-$ enter only as stop-gradiented scalars.
-3. **RLSD containment** — Setting $P_T^- = P_S$ recovers RLSD exactly; RLSD is the degenerate case where the wrong-answer teacher carries no information.
 
 ### Positioning: GRPO → RLSD → CEPO
 
@@ -145,6 +177,7 @@ CEPO-specific hyperparameters:
 
 | Hyperparameter | Default |
 |---|---|
+| Optimizer | AdamW (lr = 5e-6, cosine decay, 5-step warmup) |
 | Evidence weight $\lambda_0$ | 0.5 |
 | $\lambda$ decay | Linear → 0 over $T_{\text{warm}} = 25$ steps |
 | Evidence clip $\epsilon_w$ | 0.5 |
@@ -156,11 +189,11 @@ CEPO-specific hyperparameters:
 
 We evaluate on five held-out multimodal mathematical reasoning benchmarks using [lmms-eval](https://github.com/EvolvingLMMs-Lab/lmms-eval):
 
-- **[DynaMath](https://arxiv.org/abs/2411.00836)** — Dynamic visual math reasoning
-- **[LogicVista](https://arxiv.org/abs/2407.04973)** — Multimodal logical reasoning in visual contexts
-- **[MathVision-mini](https://arxiv.org/abs/2407.14352)** — Multimodal mathematical reasoning
-- **[MMMU](https://arxiv.org/abs/2311.16502)** — Massive multi-discipline multimodal understanding
-- **[WeMath](https://arxiv.org/abs/2407.01284)** — Mathematical reasoning for LMMs
+- **[DynaMath](https://arxiv.org/abs/2411.00836)**: Dynamic visual math reasoning
+- **[LogicVista](https://arxiv.org/abs/2407.04973)**: Multimodal logical reasoning in visual contexts
+- **[MathVision-mini](https://arxiv.org/abs/2407.14352)**: Multimodal mathematical reasoning
+- **[MMMU](https://arxiv.org/abs/2311.16502)**: Massive multi-discipline multimodal understanding
+- **[WeMath](https://arxiv.org/abs/2407.01284)**: Mathematical reasoning for LMMs
 
 Evaluation settings: temperature 1.0, top-p 1.0, top-k 40, presence penalty 2.0, max 32,000 tokens.
 
@@ -202,10 +235,7 @@ Follow the [EasyR1 dataset format](https://github.com/hiyouga/EasyR1#custom-data
 @misc{heakl2025cepo,
   title        = {CEPO: RLVR Self-Distillation using Contrastive Evidence Policy Optimization},
   author       = {Ahmed Heakl and Abdelrahman M. Shaker and Youssef Mohamed and Rania Elbadry and Omar Fetouh and Fahad Shahbaz Khan and Salman Khan},
-  year         = {2025},
-  eprint       = {XXXX.XXXXX},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.LG}
+  year         = {2026}
 }
 ```
 

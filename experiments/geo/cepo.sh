@@ -6,7 +6,7 @@ export NGPUS=8
 export CEPO_IS_PREFIX=0
 
 MODEL_PATH=Qwen/Qwen3-VL-2B-Instruct  
-EXPERIMENT_NAME=qwen3_vl_2b_geo_cepo_lora_gt_0.5init_200steps
+EXPERIMENT_NAME=qwen3_vl_2b_geo_cepo
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOGS_NAME="${EXPERIMENT_NAME}_${TIMESTAMP}"
 
@@ -22,8 +22,6 @@ python3 -m verl.trainer.main \
     algorithm.adv_estimator=grpo \
     algorithm.disable_kl=True \
     algorithm.use_kl_loss=False \
-    worker.actor.clip_ratio_low=0.2 \
-    worker.actor.clip_ratio_high=0.28 \
     algorithm.online_filtering=False \
     algorithm.cepo_use_cot_teacher=False \
     algorithm.cepo_cot_prefix_len=512 \
@@ -32,6 +30,8 @@ python3 -m verl.trainer.main \
     algorithm.cepo_warmup_steps=25 \
     algorithm.cepo_eps_w=0.2 \
     algorithm.cepo_lambda_schedule=linear \
+    worker.actor.clip_ratio_low=0.2 \
+    worker.actor.clip_ratio_high=0.28 \
     worker.actor.model.model_path=${MODEL_PATH} \
     worker.actor.model.lora.rank=16 \
     worker.actor.optim.lr=5e-6 \
@@ -55,10 +55,9 @@ python3 -m verl.trainer.main \
     trainer.experiment_name=${EXPERIMENT_NAME} \
     trainer.n_gpus_per_node=${NGPUS} \
     trainer.total_epochs=1 \
-    trainer.max_steps=200 \
+    trainer.max_steps=50 \
     trainer.logger='["console","wandb"]' \
     trainer.project_name="cepo" \
     trainer.val_freq=5 \
     trainer.save_limit=2 \
     trainer.val_before_train=True 2>&1 | tee "logs/${LOGS_NAME}"
-
