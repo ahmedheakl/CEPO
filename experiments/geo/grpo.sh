@@ -5,7 +5,7 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 export NGPUS=8
 
 MODEL_PATH=Qwen/Qwen3-VL-2B-Instruct
-EXPERIMENT_NAME=qwen3_vl_2b_geo_grpo_lora16_2k_200steps_lowrl
+EXPERIMENT_NAME=qwen3_vl_2b_geo_grpo_lora16_200steps
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOGS_NAME="${EXPERIMENT_NAME}_${TIMESTAMP}"
 python3 -m verl.trainer.main \
@@ -16,7 +16,7 @@ python3 -m verl.trainer.main \
     data.rollout_batch_size=32 \
     data.max_prompt_length=768 \
     data.max_response_length=2048 \
-    data.format_prompt=/data/fast0/users/ahmed_heakl/cepo/easyr1/examples/format_prompt/math_short.jinja \
+    data.format_prompt=../../examples/format_prompt/math_short.jinja \
     algorithm.adv_estimator=grpo \
     algorithm.disable_kl=True \
     algorithm.use_kl_loss=False \

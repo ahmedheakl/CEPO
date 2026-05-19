@@ -17,7 +17,7 @@ python3 -m verl.trainer.main \
     data.rollout_batch_size=32 \
     data.max_prompt_length=768 \
     data.max_response_length=2048 \
-    data.format_prompt=/data/fast0/users/ahmed_heakl/cepo/easyr1/examples/format_prompt/math_short.jinja \
+    data.format_prompt=../../examples/format_prompt/math_short.jinja \
     algorithm.adv_estimator=rlsd \
     algorithm.disable_kl=True \
     algorithm.use_kl_loss=False \
