@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://github.com/ahmedheakl/CEPO/stargazers"><img src="https://img.shields.io/github/stars/ahmedheakl/CEPO" alt="GitHub Repo stars"></a>
-  <!-- <a href="https://arxiv.org/abs/2505.16968"><img src="https://img.shields.io/badge/arXiv-Paper-brightgreen?style=flat-square" alt="arXiv"></a> -->
+  <a href="https://arxiv.org/abs/2605.19436"><img src="https://img.shields.io/badge/arXiv-Paper-brightgreen?style=flat-square" alt="arXiv"></a>
   <a href=""><img src="https://img.shields.io/badge/License-Apache_2.0-green.svg" alt="License"></a>
 </p>
 
@@ -232,10 +232,11 @@ Follow the [EasyR1 dataset format](https://github.com/hiyouga/EasyR1#custom-data
 ## Citation
 
 ```bibtex
-@misc{heakl2025cepo,
-  title        = {CEPO: RLVR Self-Distillation using Contrastive Evidence Policy Optimization},
-  author       = {Ahmed Heakl and Abdelrahman M. Shaker and Youssef Mohamed and Rania Elbadry and Omar Fetouh and Fahad Shahbaz Khan and Salman Khan},
-  year         = {2026}
+@article{heakl2026cepo,
+  title={CEPO: RLVR Self-Distillation using Contrastive Evidence Policy Optimization},
+  author={Heakl, Ahmed and Shaker, Abdelrahman M. and Mohamed, Youssef and Elbadry, Rania and Fetouh, Omar and Khan, Fahad Shahbaz and Khan, Salman},
+  journal={arXiv preprint arXiv:2605.19436},
+  year={2026}
 }
 ```
 
