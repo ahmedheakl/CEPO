@@ -6,8 +6,8 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/ahmedheakl/CEPO/stargazers"><img src="https://img.shields.io/github/stars/ahmedheakl/CEPO" alt="GitHub Repo stars"></a>
   <a href="https://arxiv.org/abs/2605.19436"><img src="https://img.shields.io/badge/arXiv-Paper-brightgreen?style=flat-square" alt="arXiv"></a>
+  <a href="https://github.com/ahmedheakl/CEPO/stargazers"><img src="https://img.shields.io/github/stars/ahmedheakl/CEPO" alt="GitHub Repo stars"></a>
   <a href=""><img src="https://img.shields.io/badge/License-Apache_2.0-green.svg" alt="License"></a>
 </p>
 
