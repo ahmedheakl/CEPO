@@ -28,7 +28,7 @@
 ---
 
 ## 🆕 Latest Updates
-- 📢 **May 2025**: Training code is released.
+- 📢 **May 2026**: Training code is released.
 
 ## Table of Contents
 - [💡 TL;DR](#tldr)
